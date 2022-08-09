@@ -29,32 +29,32 @@ func (r TaskRoutes) Route() []helper.Route {
 			Handler: []gin.HandlerFunc{hand.CreateTask},
 		},
 		{
-			Path:    "/tasks",
+			Path:    "/tasks_id",
 			Method:  "POST",
 			Handler: []gin.HandlerFunc{hand.GetTaskById},
 		},
 		{
-			Path:    "/tasks/id/:id",
+			Path:    "/tasks_id/:id",
 			Method:  "GET",
 			Handler: []gin.HandlerFunc{hand.GetTaskById},
 		},
 		{
-			Path:    "/tasks/assignee",
+			Path:    "/tasks_assignee",
 			Method:  "POST",
 			Handler: []gin.HandlerFunc{hand.GetTasksByAssignee},
 		},
 		{
-			Path:    "/tasks/assignee/:assignee",
+			Path:    "/tasks_assignee/:assignee",
 			Method:  "GET",
 			Handler: []gin.HandlerFunc{hand.GetTasksByAssignee},
 		},
 		{
-			Path:    "/tasks/status",
+			Path:    "/tasks_status",
 			Method:  "POST",
 			Handler: []gin.HandlerFunc{hand.GetTasksByStatus},
 		},
 		{
-			Path:    "/tasks/status/:status",
+			Path:    "/tasks_status/:status",
 			Method:  "GET",
 			Handler: []gin.HandlerFunc{hand.GetTasksByStatus},
 		},
@@ -69,7 +69,7 @@ func (r TaskRoutes) Route() []helper.Route {
 			Handler: []gin.HandlerFunc{hand.DeleteTask},
 		},
 		{
-			Path:    "/tasks/delete/:id",
+			Path:    "/tasks_delete/:id",
 			Method:  "GET",
 			Handler: []gin.HandlerFunc{hand.DeleteTask},
 		},

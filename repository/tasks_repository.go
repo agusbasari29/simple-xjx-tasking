@@ -24,7 +24,7 @@ func NewTasksRepository(db *gorm.DB) *tasksRepository {
 }
 
 func (r *tasksRepository) CreateTask(task entity.Tasks) (entity.Tasks, error) {
-	err := r.db.Raw("INSERT INTO tasks (id, task, assignee, deadline, status) VALUES (@ID, @Tasks, @Assignee, @Deadline, @Status)", task).Save(&task).Error
+	err := r.db.Raw("INSERT INTO tasks ( task, assignee, deadline, status) VALUES (@Task, @Assignee, @Deadline, @Status)", task).Create(&task).Error
 	if err != nil {
 		return task, err
 	}
@@ -33,7 +33,7 @@ func (r *tasksRepository) CreateTask(task entity.Tasks) (entity.Tasks, error) {
 
 func (r *tasksRepository) GetTasks() ([]entity.Tasks, error) {
 	tasks := []entity.Tasks{}
-	err := r.db.Raw("SELECT * FROM tasks").Save(&tasks).Error
+	err := r.db.Raw("SELECT * FROM tasks").Find(&tasks).Error
 	if err != nil {
 		return tasks, err
 	}
@@ -50,7 +50,7 @@ func (r *tasksRepository) GetTaskById(task entity.Tasks) (entity.Tasks, error) {
 
 func (r *tasksRepository) GetTasksByAssignee(task entity.Tasks) ([]entity.Tasks, error) {
 	tasks := []entity.Tasks{}
-	err := r.db.Raw("SELECT * FROM tasks WHERE assignee=@Assignee", task).Save(&tasks).Error
+	err := r.db.Raw("SELECT * FROM tasks WHERE assignee=@Assignee", task).Scan(&tasks).Error
 	if err != nil {
 		return tasks, err
 	}
@@ -59,7 +59,7 @@ func (r *tasksRepository) GetTasksByAssignee(task entity.Tasks) ([]entity.Tasks,
 
 func (r *tasksRepository) GetTasksByStatus(task entity.Tasks) ([]entity.Tasks, error) {
 	tasks := []entity.Tasks{}
-	err := r.db.Raw("SELECT * FROM tasks WHERE status=@Status", task).Save(&tasks).Error
+	err := r.db.Raw("SELECT * FROM tasks WHERE status=@Status", task).Scan(&tasks).Error
 	if err != nil {
 		return tasks, err
 	}
@@ -67,7 +67,7 @@ func (r *tasksRepository) GetTasksByStatus(task entity.Tasks) ([]entity.Tasks, e
 }
 
 func (r *tasksRepository) UpdateTask(task entity.Tasks) (entity.Tasks, error) {
-	err := r.db.Raw("UPDATE tasks SET task = @Task, assignee = @Assignee, deadline = @Deadline, status = @Status WHERE id = @ID", task).Save(&task).Error
+	err := r.db.Statement.Exec("UPDATE tasks SET task = @Task, assignee = @Assignee, deadline = @Deadline, status = @Status WHERE id = @ID", task).Save(&task).Error
 	if err != nil {
 		return task, err
 	}
@@ -75,7 +75,8 @@ func (r *tasksRepository) UpdateTask(task entity.Tasks) (entity.Tasks, error) {
 }
 
 func (r *tasksRepository) DeleteTask(task entity.Tasks) (entity.Tasks, error) {
-	err := r.db.Raw("DELETE FROM tasks WHERE id=@ID", task).Save(&task).Error
+	r.db.Find(&task, "id", task.ID)
+	err := r.db.Raw("DELETE FROM tasks WHERE id = @ID", task).Error
 	if err != nil {
 		return task, err
 	}
