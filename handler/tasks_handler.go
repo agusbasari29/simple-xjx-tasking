@@ -92,9 +92,6 @@ func (h *tasksHandler) GetTaskById(ctx *gin.Context) {
 			ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 			return
 		}
-		response := helper.ResponseFormatter(http.StatusBadRequest, "error", "Parameter can not be empty!", nil)
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
-		return
 	} else {
 		x, _ := strconv.Atoi(id)
 		req.ID = uint(x)
@@ -105,7 +102,7 @@ func (h *tasksHandler) GetTaskById(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 		return
 	}
-	response := helper.ResponseFormatter(http.StatusBadRequest, "success", "Task successfully retrieved by id", task)
+	response := helper.ResponseFormatter(http.StatusOK, "success", "Task successfully retrieved by id", task)
 	ctx.JSON(http.StatusOK, response)
 }
 
@@ -129,9 +126,6 @@ func (h *tasksHandler) GetTasksByAssignee(ctx *gin.Context) {
 			ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 			return
 		}
-		response := helper.ResponseFormatter(http.StatusBadRequest, "error", "Parameter can not be empty!", nil)
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
-		return
 	} else {
 		req.Assignee = assignee
 	}
@@ -169,9 +163,6 @@ func (h *tasksHandler) GetTasksByStatus(ctx *gin.Context) {
 			ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 			return
 		}
-		response := helper.ResponseFormatter(http.StatusBadRequest, "error", "Parameter can not be empty!", nil)
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
-		return
 	} else {
 		switch status {
 		case "idle":

@@ -42,7 +42,7 @@ func (r *tasksRepository) GetTasks() ([]entity.Tasks, error) {
 }
 
 func (r *tasksRepository) GetTaskById(task entity.Tasks) (entity.Tasks, error) {
-	err := r.db.Raw("SELECT * FROM tasks WHERE id=@ID", task).Save(&task).Error
+	err := r.db.Find(&task, "id", task.ID).Error
 	if err != nil {
 		return task, err
 	}
@@ -51,7 +51,7 @@ func (r *tasksRepository) GetTaskById(task entity.Tasks) (entity.Tasks, error) {
 
 func (r *tasksRepository) GetTasksByAssignee(task entity.Tasks) ([]entity.Tasks, error) {
 	tasks := []entity.Tasks{}
-	err := r.db.Raw("SELECT * FROM tasks WHERE assignee=@Assignee", task).Scan(&tasks).Error
+	err := r.db.Raw("SELECT * FROM tasks WHERE assignee = @Assignee", task).Scan(&tasks).Error
 	if err != nil {
 		return tasks, err
 	}
@@ -60,7 +60,7 @@ func (r *tasksRepository) GetTasksByAssignee(task entity.Tasks) ([]entity.Tasks,
 
 func (r *tasksRepository) GetTasksByStatus(task entity.Tasks) ([]entity.Tasks, error) {
 	tasks := []entity.Tasks{}
-	err := r.db.Raw("SELECT * FROM tasks WHERE status=@Status", task).Scan(&tasks).Error
+	err := r.db.Raw("SELECT * FROM tasks WHERE status = 	@Status", task).Scan(&tasks).Error
 	if err != nil {
 		return tasks, err
 	}
