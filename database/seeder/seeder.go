@@ -11,5 +11,5 @@ var (
 )
 
 func LetsSeed() {
-	TasksSeederUp(100)
+	TasksSeederUp(10)
 }

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CRUD</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
+      integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <style>
+      .form-group {
+        padding-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row" style="padding-top: 30px">
+        <div class="col-sm-4">
+          <div class="card">
+            <h5 class="card-header">Form Tasks</h5>
+            <div class="card-body">
+              <form method="GET">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">ID</label>
+                  <input
+                    name="id"
+                    type="text"
+                    class="form-control"
+                    id="idPost"
+                    aria-describedby="nameHelp"
+                    placeholder=""
+                    disabled
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Task</label>
+                  <input
+                    name="name"
+                    type="text"
+                    class="form-control"
+                    id="namePost"
+                    aria-describedby="nameHelp"
+                    placeholder="Enter task"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Assignee</label>
+                  <input
+                    type="text"
+                    name="pic"
+                    class="form-control"
+                    id="picPost"
+                    aria-describedby="picHelp"
+                    placeholder="Enter assignee"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Deadline</label>
+                  <input
+                    type="date"
+                    name="deadline"
+                    class="form-control"
+                    id="deadlinePost"
+                    aria-describedby="deadlineHelp"
+                    placeholder="Enter deadline"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Status</label>
+                  <select
+                    name="statusPost"
+                    class="form-control"
+                    id="statusPost"
+                  >
+                    <option selected>Select Status</option>
+                    <option value="ldle">Idle</option>
+                    <option value="progress">Progress</option>
+                    <option value="completed">Completed</option>
+                  </select>
+                </div>
+                <button class="btn btn-primary" onClick="upsertTask()">
+                  Submit
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="card">
+            <h5 class="card-header">List Tasks</h5>
+            <div class="card-body">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Task</th>
+                    <th scope="col">Assignee</th>
+                    <th scope="col">Deadline</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="tasks"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container"></div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+      $.get("http://localhost:5050/api/v1/tasks", function (data, status) {
+        console.log(data);
+        for (let i = 0; i < data.data.length; i++) {
+          $("#tasks").append(
+            `<tr><th scope="row">${data.data[i].id}</th><td>${data.data[i].task}</td><td>${data.data[i].assignee}</td><td>${data.data[i].deadline}</td><td>${data.data[i].status}</td><td><a href="" style="color:red;" onClick="deleteTask(${data.data[i].id})"><span class="material-icons">delete</span></a> <a href="#" onClick="editTask(${data.data[i].id}, '${data.data[i].task}', '${data.data[i].assignee}', '${data.data[i].deadline}', ${data.data[i].status})"><span class="material-icons">edit</span></a></td></tr>`
+          );
+        }
+      });
+      function upsertTask() {
+        const type = $("#idPost").val()
+          ? "PUT"
+          : "POST";
+        const data = {
+          id: $("#idPost").val(),
+          task: $("#namePost").val(),
+          assaignee: $("#picPost").val(),
+          deadline: $("#deadlinePost").val(),
+          status: $("#statusPost option:selected").val(),
+        };
+        $.ajax({
+          type: type,
+          url: "http://localhost:5050/api/v1/",
+          data,
+        });
+      }
+
+      function editTask(id, name, pic, deadline, status) {
+        $("#idPost").val(id);
+        $("#namePost").val(name);
+        $("#picPost").val(pic);
+        $("#deadlinePost").val(deadline);
+        $("#statusPost").val(status).change();
+      }
+
+      function deleteTask(id) {
+        $.ajax({
+          type: "GET",
+          url: `http://localhost:5050/api/v1/tasks_delete/${id}`,
+        });
+      }
+    </script>
+  </body>
+</html>
