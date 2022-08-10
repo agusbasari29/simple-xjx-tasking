@@ -54,8 +54,8 @@ func (h *tasksHandler) UpdateTask(ctx *gin.Context) {}
 
 func (h *tasksHandler) DeleteTask(ctx *gin.Context) {
 	var req request.TaskIdRequest
-	id, _ := strconv.Atoi(ctx.Param("id"))
-	if id == 0 {
+	id := ctx.Param("id")
+	if id == "" {
 		err := ctx.ShouldBind(req)
 		if err != nil {
 			errFormat := helper.ErrorFormatter(err)
@@ -76,7 +76,8 @@ func (h *tasksHandler) DeleteTask(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 		return
 	} else {
-		req.ID = uint(id)
+		x, _ := strconv.Atoi(id)
+		req.ID = uint(x)
 	}
 	del, err := h.taskService.DeleteTask(req)
 	if err != nil {
@@ -86,7 +87,7 @@ func (h *tasksHandler) DeleteTask(ctx *gin.Context) {
 		return
 	} else {
 		task := response.TaskFormatter(del)
-		response := helper.ResponseFormatter(http.StatusOK, "success", "Successfully deletes task.", task)
+		response := helper.ResponseFormatter(http.StatusOK, "success", "Task is  successfully deleted.", task)
 		ctx.JSON(http.StatusOK, response)
 	}
 }
