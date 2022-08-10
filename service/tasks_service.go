@@ -14,8 +14,8 @@ type TasksService interface {
 	CreateTask(req request.TaskRequest) (entity.Tasks, error)
 	GetTasks() ([]entity.Tasks, error)
 	GetTaskById(req request.TaskIdRequest) (entity.Tasks, error)
-	GetTasksByAssignee(req request.TaskRequest) ([]entity.Tasks, error)
-	GetTasksByStatus(req request.TaskRequest) ([]entity.Tasks, error)
+	GetTasksByAssignee(req request.TaskAssigneeRequest) ([]entity.Tasks, error)
+	GetTasksByStatus(req request.TaskStatusRequest) ([]entity.Tasks, error)
 	UpdateTask(req request.TaskUpdateRequest) (entity.Tasks, error)
 	DeleteTask(req request.TaskIdRequest) (entity.Tasks, error)
 }
@@ -64,7 +64,7 @@ func (s *tasksServices) GetTaskById(req request.TaskIdRequest) (entity.Tasks, er
 	return get, nil
 }
 
-func (s *tasksServices) GetTasksByAssignee(req request.TaskRequest) ([]entity.Tasks, error) {
+func (s *tasksServices) GetTasksByAssignee(req request.TaskAssigneeRequest) ([]entity.Tasks, error) {
 	task := entity.Tasks{}
 	err := smapping.FillStruct(&task, smapping.MapFields(&req))
 	if err != nil {
@@ -77,7 +77,7 @@ func (s *tasksServices) GetTasksByAssignee(req request.TaskRequest) ([]entity.Ta
 	return gets, nil
 }
 
-func (s *tasksServices) GetTasksByStatus(req request.TaskRequest) ([]entity.Tasks, error) {
+func (s *tasksServices) GetTasksByStatus(req request.TaskStatusRequest) ([]entity.Tasks, error) {
 	task := entity.Tasks{}
 	err := smapping.FillStruct(&task, smapping.MapFields(&req))
 	if err != nil {

@@ -24,6 +24,7 @@ func NewTasksRepository(db *gorm.DB) *tasksRepository {
 }
 
 func (r *tasksRepository) CreateTask(task entity.Tasks) (entity.Tasks, error) {
+	task.Status = entity.Idle
 	err := r.db.Raw("INSERT INTO tasks ( task, assignee, deadline, status) VALUES (@Task, @Assignee, @Deadline, @Status)", task).Create(&task).Error
 	if err != nil {
 		return task, err
@@ -76,7 +77,7 @@ func (r *tasksRepository) UpdateTask(task entity.Tasks) (entity.Tasks, error) {
 
 func (r *tasksRepository) DeleteTask(task entity.Tasks) (entity.Tasks, error) {
 	r.db.Find(&task, "id", task.ID)
-	err := r.db.Raw("DELETE FROM tasks WHERE id = @ID", task).Error
+	err := r.db.Delete(&task).Error
 	if err != nil {
 		return task, err
 	}
