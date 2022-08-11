@@ -26,5 +26,5 @@ func main() {
 		c.JSON(http.StatusOK, gin.H{"message": "Succesfully seed database"})
 	})
 
-	xjx.Run(os.Getenv("PORT"))
+	xjx.Run(":" + os.Getenv("PORT"))
 }
