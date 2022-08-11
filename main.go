@@ -25,5 +25,5 @@ func main() {
 		c.JSON(http.StatusOK, gin.H{"message": "Succesfully seed database"})
 	})
 
-	xjx.Run(":5000")
+	xjx.Run("127.0.0.1:5000")
 }
