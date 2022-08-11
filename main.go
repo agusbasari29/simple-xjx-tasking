@@ -2,7 +2,6 @@ package main
 
 import (
 	"net/http"
-	"os"
 
 	"github.com/agusbasari29/simple-xjx-tasking.git/database"
 	"github.com/agusbasari29/simple-xjx-tasking.git/database/seeder"
@@ -26,5 +25,5 @@ func main() {
 		c.JSON(http.StatusOK, gin.H{"message": "Succesfully seed database"})
 	})
 
-	xjx.Run(os.Getenv("SERVER_PORT"))
+	xjx.Run(":5000")
 }
