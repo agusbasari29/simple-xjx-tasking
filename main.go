@@ -6,6 +6,7 @@ import (
 
 	"github.com/agusbasari29/simple-xjx-tasking.git/database"
 	"github.com/agusbasari29/simple-xjx-tasking.git/database/seeder"
+	"github.com/agusbasari29/simple-xjx-tasking.git/entity"
 	"github.com/agusbasari29/simple-xjx-tasking.git/route"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
@@ -17,7 +18,7 @@ var (
 
 func main() {
 	defer database.CloseDatabaseConnection(db)
-	// db.AutoMigrate(&entity.Tasks{})
+	db.AutoMigrate(&entity.Tasks{})
 	xjx := gin.Default()
 	route.DefineApiRoute(xjx)
 	xjx.Use(static.Serve("/", static.LocalFile("static", true)))
