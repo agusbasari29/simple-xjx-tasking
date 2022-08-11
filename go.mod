@@ -1,6 +1,6 @@
 module github.com/agusbasari29/simple-xjx-tasking.git
 
-go 1.19
+go 1.18
 
 require (
 	github.com/bxcodec/faker v2.0.1+incompatible
